@@ -34,18 +34,16 @@ def create_mock_data(filename='customer_churn_mock.csv'):
     df.to_csv(filename, index=False)
     return df
 
-#เก็บ Data คล้ายกับรู้ว่าลูกค้าจะสั่งผัดกะเพราละทำไว้ ถ้าลูกค้าสั่งก็สามารถเสิร์ฟได้เลย
 @st.cache_data
 def train_model():
   if not os.path.exists('customer_churn_mock.csv'):
     df = create_mock_data()
   else:
     df = pd.read_csv('customer_churn_mock.csv')
-#เอาทุกวันยกเว้น churn column เดียว
     
   X = df[['Age', 'Tenure_Months', 'Monthly_Charge', 'Support_Tickets']]
   y = df['Churn']
-#รันโมเดล
+
   model = RandomForestClassifier(n_estimators=100, random_state=42)
   model.fit(X, y)
   return model
